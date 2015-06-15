@@ -18,6 +18,16 @@ public class Catalog {
         this.image = image;
     }
 
+    public void generationID() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("00");
+        sb.append(this.getName().length());
+        sb.append(this.getImage().length());
+        sb.append("_");
+        String str = this.getName();
+        sb.append(str.replace(' ', '_'));
+        setId(sb.toString());
+    }
 
     public String getId() {
         return id;
@@ -67,7 +77,8 @@ public class Catalog {
     @Override
     public String toString() {
         return "Catalog{" +
-                "name='" + name + '\'' +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
                 ", image='" + image + '\'' +
                 '}';
     }
