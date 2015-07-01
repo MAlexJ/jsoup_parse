@@ -8,10 +8,8 @@ public class ProductCatalog {
 
     private List<Catalog> catalogList = new ArrayList<Catalog>();
 
-
     public ProductCatalog() {
     }
-
 
     public boolean addCatalog(Catalog catalog) {
         return catalogList.add(catalog);
@@ -31,4 +29,8 @@ public class ProductCatalog {
         }
     }
 
+    @Override
+    public String toString() {
+        return "ProductCatalog -> " + catalogList;
+    }
 }

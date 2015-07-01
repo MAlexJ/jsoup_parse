@@ -15,7 +15,8 @@ public class Selector_01 {
 
     public static void main(String[] args) {
         try {
-            Document doc = Jsoup.connect("http://kingsmoke.com.ua/product_list").get();
+            Document doc = Jsoup.connect("http://kingsmoke.com.ua/product_list").timeout(2000).get();
+
             String str = doc.select(".b-product-groups_view_list").html();
             parceContext(str);
             productCatalog.printCatalog();

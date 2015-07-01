@@ -1,9 +1,12 @@
 package test_02;
 
-public class Catalog {
+import java.io.Serializable;
+
+public class Catalog implements Serializable {
     private String id;
     private String name;
     private String image;
+    private String link;
 
     public Catalog() {
     }
@@ -53,25 +56,12 @@ public class Catalog {
         this.image = image;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Catalog catalog = (Catalog) o;
-
-        if (id != null ? !id.equals(catalog.id) : catalog.id != null) return false;
-        if (name != null ? !name.equals(catalog.name) : catalog.name != null) return false;
-        return !(image != null ? !image.equals(catalog.image) : catalog.image != null);
-
+    public String getLink() {
+        return link;
     }
 
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (image != null ? image.hashCode() : 0);
-        return result;
+    public void setLink(String link) {
+        this.link = link;
     }
 
     @Override
@@ -80,6 +70,7 @@ public class Catalog {
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", image='" + image + '\'' +
+                ", link='" + link + '\'' +
                 '}';
     }
 }
