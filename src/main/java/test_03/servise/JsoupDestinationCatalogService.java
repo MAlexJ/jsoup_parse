@@ -1,35 +1,35 @@
 package test_03.servise;
 
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import test_03.constants.Constants;
-import test_03.entity.Catalog;
+import test_03.entity.Product;
+import test_03.entity.ProductList;
+
 
 import java.io.IOException;
 import java.net.UnknownHostException;
 
-public class JsoupCatalogService extends AbstractServise implements Constants {
+public class JsoupDestinationCatalogService extends AbstractServise implements Constants {
     private Document reqDoc;
     private Elements elements;
     private String str;
 
-    public void init(int timeout) {
+    public void init(int timeOut, String strPath) {
         try {
-            /** Open connection. */
-            reqDoc = Jsoup.connect(PRODUCT_CATALOG).timeout(timeout).get();
-            /**  Parse CSS selector <ul class=productCatalogSelectorCSS >... <ul/>. */
-            str = reqDoc.select(PRODUCT_CATALOG_SELECTOR_CSS).html();
-            /**  Parse context. */
+            reqDoc = Jsoup.connect(strPath).timeout(timeOut).get();
+            str = reqDoc.select(PRODUCT_CATALOG_SELECTOR_CSS_GALLERY).html();
             parseContext(str);
-            getCatalogList().printCatalog();
+            getProductList().printProduct();
         } catch (UnknownHostException e) {
             /** UnknownHostException -> No internet connection. */
             System.out.println("No internet connection");
             System.exit(0);
         } catch (IOException e) {
             /** SocketTimeException -> replay connection. */
-            if (timeout < 5000) init(timeout * 40);
+            if (timeOut < 5000) init(timeOut * 40, strPath);
             else throw new IllegalArgumentException(">> IllegalArgumentException -> Error connecting to the Internet");
         } catch (IllegalArgumentException e) {
             /** IllegalArgumentException -> parseContext(String str) -> str == null. */
@@ -39,7 +39,9 @@ public class JsoupCatalogService extends AbstractServise implements Constants {
             e.printStackTrace();
             System.exit(0);
         }
+
     }
+
 
     public void parseContext(String str) {
         if (str == null) {
@@ -48,7 +50,8 @@ public class JsoupCatalogService extends AbstractServise implements Constants {
         char[] chars = str.toCharArray();
         int targetEnd = str.indexOf("</li>");
         if (targetEnd >= 0) {
-            Catalog catalog = new Catalog();
+            Product product = new Product();
+
             /** </li> -> char=5 */
             targetEnd += 5;
             char[] charsCatalog = new char[targetEnd];
@@ -59,15 +62,27 @@ public class JsoupCatalogService extends AbstractServise implements Constants {
             /** <Link to catalog */
             reqDoc = Jsoup.parse(new String(charsCatalog));
             elements = reqDoc.select("a[href]");
-            catalog.setLink(WEBSITE + elements.attr("href"));
+            product.setLink(elements.attr("href"));
             /** Name catalog */
             elements = reqDoc.select("img");
-            catalog.setName(elements.attr("alt"));
+            product.setTitle(elements.attr("alt"));
             /** Image catalog */
-            catalog.setImage(searchImage(elements.attr("src"), elements.attr("longdesc")));
+            product.setImage(searchImage(elements.attr("src"), elements.attr("longdesc"), elements.attr("content")));
+            /** Name price */
+            elements = reqDoc.select(PRODUCT_CATALOG_SELECTOR_CSS_GALLERY_CURRENT_PRICE);
+            String textPrice = elements.text();
+            try {
+                product.setPrice(Float.valueOf(textPrice.replace(" грн.", "")));
+            } catch (NumberFormatException e) {
+                System.out.println("Float.valueOf(textPrice.replace(\" грн.\",\"\"))");
+                throw e;
+            }
+            /** Name state */
+            elements = reqDoc.select(PRODUCT_CATALOG_SELECTOR_CSS_GALLERY_STATE);
+            product.setStok(elements.text());
             /** Id catalog */
-            catalog.generationID();
-            getCatalogList().addCatalog(catalog);
+            product.generationID();
+            getProductList().addProductList(product);
             parseContext(resultString);
         } else {
             return;
@@ -82,4 +97,5 @@ public class JsoupCatalogService extends AbstractServise implements Constants {
         }
         return "http://images.ua.prom.st/157205743_w0_h290_div_header.jpg";
     }
+
 }

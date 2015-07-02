@@ -19,6 +19,16 @@ public class ProductList implements Serializable {
         this.productList.add(product);
     }
 
+    public void printProduct() {
+        for (Product iter : productList) {
+            System.out.println();
+            System.out.println("***************************");
+            System.out.println(iter);
+            System.out.println("***************************");
+            System.out.println();
+        }
+    }
+
     @Override
     public String toString() {
         return "ProductList{" +
