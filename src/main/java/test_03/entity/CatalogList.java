@@ -1,14 +1,15 @@
-package test_02;
+package test_03.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class ProductCatalog {
+public class CatalogList implements Serializable {
 
     private List<Catalog> catalogList = new ArrayList<Catalog>();
 
-    public ProductCatalog() {
+    public CatalogList() {
     }
 
     public boolean addCatalog(Catalog catalog) {

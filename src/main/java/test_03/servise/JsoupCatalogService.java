@@ -1,27 +1,18 @@
-package test_02;
+package test_03.servise;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import test_03.constants.Constants;
+import test_03.entity.Catalog;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
 
-public class Selector_JSOUP {
-
-    private final String WEBSITE = "http://kingsmoke.com.ua";
-    private final String PRODUCT_CATALOG = "http://kingsmoke.com.ua/product_list";
-    private final String PRODUCT_CATALOG_SELECTOR_CSS = ".b-product-groups_view_list";
-    private ProductCatalog productCatalog = new ProductCatalog();
-
+public class JsoupCatalogService extends AbstractServise implements Constants {
     private Document reqDoc;
     private Elements elements;
     private String str;
-
-    public static void main(String[] args) {
-        Selector_JSOUP regJO = new Selector_JSOUP();
-        regJO.init(1000);
-    }
 
     public void init(int timeout) {
         try {
@@ -31,14 +22,14 @@ public class Selector_JSOUP {
             str = reqDoc.select(PRODUCT_CATALOG_SELECTOR_CSS).html();
             /**  Parse context. */
             parseContext(str);
-            productCatalog.printCatalog();
+            getCatalogList().printCatalog();
         } catch (UnknownHostException e) {
             /** UnknownHostException -> No internet connection. */
             System.out.println("No internet connection");
             System.exit(0);
         } catch (IOException e) {
             /** SocketTimeException -> replay connection. */
-            if (timeout < 5000) init(timeout * 2);
+            if (timeout < 5000) init(timeout * 40);
             else throw new IllegalArgumentException(">> IllegalArgumentException -> Error connecting to the Internet");
         } catch (IllegalArgumentException e) {
             /** IllegalArgumentException -> parseContext(String str) -> str == null. */
@@ -49,7 +40,6 @@ public class Selector_JSOUP {
             System.exit(0);
         }
     }
-
 
     public void parseContext(String str) {
         if (str == null) {
@@ -81,11 +71,11 @@ public class Selector_JSOUP {
             } else if (longdesc.endsWith(".jpeg") || longdesc.endsWith(".jpg")) {
                 catalog.setImage(longdesc);
             } else {
-            //** картинка по умолчанию
+                //** картинка по умолчанию
             }
             /** Id catalog */
             catalog.generationID();
-            productCatalog.addCatalog(catalog);
+            getCatalogList().addCatalog(catalog);
             parseContext(resultString);
         } else {
             return;
