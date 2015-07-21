@@ -8,12 +8,12 @@ public class MainContoller {
     public static void main(String[] args) {
 
         JsoupCatalogService catalogService = new JsoupCatalogService();
-        catalogService.init(100);
+        catalogService.init(1000);
 
         System.out.println();
         System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-        JsoupDestinationCatalogService jsoupDestinationCatalogService = new JsoupDestinationCatalogService();
-        jsoupDestinationCatalogService.init(100, "http://kingsmoke.com.ua/g5379027-elektronnye-sigarety");
+//        JsoupDestinationCatalogService jsoupDestinationCatalogService = new JsoupDestinationCatalogService();
+//        jsoupDestinationCatalogService.init(100, "http://kingsmoke.com.ua/g5379027-elektronnye-sigarety");
 
 
     }

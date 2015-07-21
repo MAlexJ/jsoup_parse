@@ -1,10 +1,10 @@
-package test_03.servise;
+package test_04.servise;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-import test_03.constants.Constants;
-import test_03.entity.Catalog;
+import test_04.constants.Constants;
+import test_04.entity.Catalog;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -29,7 +29,7 @@ public class JsoupCatalogService extends AbstractServise implements Constants {
             System.exit(0);
         } catch (IOException e) {
             /** SocketTimeException -> replay connection. */
-            if (timeout < 5000) init(timeout * 4);
+            if (timeout < 5000) init(timeout * 40);
             else throw new IllegalArgumentException(">> IllegalArgumentException -> Error connecting to the Internet");
         } catch (Exception e) {
             e.printStackTrace();
