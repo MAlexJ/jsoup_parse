@@ -15,9 +15,9 @@ public class Service extends AbstractService {
             reqDoc = Jsoup.connect(uri).get();
             System.out.println();
             System.out.println(uri);
-            System.out.println("isProduct(str); -> "+isProduct(str));
-            System.out.println("isCatalog(str); -> " + isCatalog(str));
-            System.out.println("isDesCatalog(str) -> "+isDesCatalog(str));
+            System.out.println("isProduct(str); -> "+isProduct(reqDoc));
+            System.out.println("isCatalog(str); -> " + isCatalog(reqDoc));
+            System.out.println("isDesCatalog(str) -> "+isDesCatalog(reqDoc));
             System.out.println();
         } catch (Exception e) {
             e.printStackTrace();

@@ -9,8 +9,8 @@ public class MainContoller {
     public static void main(String[] args) {
 
         /** Catalog */
-//        JsoupCatalogService catalogService = new JsoupCatalogService();
-//        catalogService.init(100);
+        JsoupCatalogService catalogService = new JsoupCatalogService();
+        catalogService.init(100);
 //
 //        System.out.println();
 //        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -26,7 +26,7 @@ public class MainContoller {
 
         /** Product */
 
-        JsoupProductService jsoupProductService = new JsoupProductService();
-        jsoupProductService.init(100);
+//        JsoupProductService jsoupProductService = new JsoupProductService();
+//        jsoupProductService.init(100);
     }
 }

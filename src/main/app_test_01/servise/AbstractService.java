@@ -7,18 +7,18 @@ public abstract class AbstractService {
     protected Document reqDoc;
     protected String str;
 
-    public boolean isProduct(String str) {
+    public boolean isProduct(Document str) {
         //selector is responsible for a product
-        return (!reqDoc.select(".b-title_type_product").html().isEmpty());
+        return (!str.select(".b-title_type_product").html().isEmpty());
     }
 
-    public boolean isCatalog(String str) {
+    public boolean isCatalog(Document str) {
         //selector is responsible for a catalog
-        return (!reqDoc.select(".b-product-groups_view_list").html().isEmpty());
+        return (!str.select(".b-product-groups_view_list").html().isEmpty());
     }
 
-    public boolean isDesCatalog(String str) {
+    public boolean isDesCatalog(Document str) {
         //selector is responsible for a sub-selector
-        return (reqDoc.select(".b-product-gallery").html().isEmpty() == false & reqDoc.select(".b-product-groups_view_list").html().isEmpty() == true) ? true : false;
+        return (str.select(".b-product-gallery").html().isEmpty() == false & reqDoc.select(".b-product-groups_view_list").html().isEmpty() == true) ? true : false;
     }
 }
