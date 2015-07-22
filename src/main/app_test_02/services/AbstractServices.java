@@ -45,8 +45,8 @@ public abstract class AbstractServices implements Constants_01 {
             System.exit(0);
         } catch (IOException e) {
             /** SocketTimeException -> replay connection. */
-//            if (timeout < 5000) openConnection(timeout * 5, str);
-//            else throw new IllegalArgumentException(">> IllegalArgumentException -> Error connecting to the Internet");
+            if (timeout < 5000) openConnection(timeout * 10, str);
+            else throw new IllegalArgumentException(">> IllegalArgumentException -> Error connecting to the Internet");
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(0);

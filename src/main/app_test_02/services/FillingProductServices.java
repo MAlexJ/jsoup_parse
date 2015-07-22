@@ -10,28 +10,25 @@ import java.util.List;
 
 public class FillingProductServices extends AbstractServices implements Constants_01 {
     private List<Product> productList;
+    private Product currentProduct;
 
     public void init() {
-        fillingDirectory(product);
-
-        //sout product
-        for (Product iter : product.getProductList()) {
-            System.out.println(iter);
-        }
+        fillingCatalog(product);
     }
 
 
-    private void fillingDirectory(Product currentProduct) {
+    private void fillingCatalog(Product currentProduct) {
         reqDoc = openConnection(TIMEOUT, currentProduct.getLink());
-        if (isCatalog(reqDoc)) {
-            productList = new ArrayList<>();
-            parseContext(reqDoc.select(PRODUCT_groups_view_list).html());
-            currentProduct.setProductList(productList);
-        } else {
+        if (reqDoc == null) {
+            System.out.println("Фиговый коннект");
             return;
         }
+        if (isCatalog(reqDoc)) {
+            this.productList = new ArrayList<>();
+            parseContextDirectory(reqDoc.select(PRODUCT_groups_view_list).html());
+            currentProduct.setProductList(this.productList);
+        }
         if (isDesCatalog(reqDoc)) {
-            System.out.println(currentProduct);
             return;
         }
         if (isProduct(reqDoc)) {
@@ -39,20 +36,28 @@ public class FillingProductServices extends AbstractServices implements Constant
         }
         if (!currentProduct.getProductList().isEmpty()) {
             for (Product iter : currentProduct.getProductList()) {
-                fillingDirectory(iter);
+                fillingCatalog(iter);
             }
         }
 
     }
 
-    public void parseContext(String str) {
+    private void fillingDesCatalog(Product currentProduct) {
+
+    }
+
+    private void fillingProduct(Product currentProduct) {
+
+    }
+
+    private void parseContextDirectory(String str) {
         if (str == null) {
             throw new IllegalArgumentException(">>> parseContext(String str) -> str == null");
         }
         char[] chars = str.toCharArray();
         int targetEnd = str.indexOf("</li>");
         if (targetEnd >= 0) {
-            Product currentProduct = new Product();
+            this.currentProduct = new Product();
             /** </li> -> char=5 */
             targetEnd += 5;
             char[] charsCatalog = new char[targetEnd];
@@ -63,22 +68,22 @@ public class FillingProductServices extends AbstractServices implements Constant
             /** <Link to catalog */
             reqDoc = Jsoup.parse(new String(charsCatalog));
             elements = reqDoc.select("a[href]");
-            currentProduct.setLink(WEBSITE + elements.attr("href"));
+            this.currentProduct.setLink(WEBSITE + elements.attr("href"));
             /** Name catalog */
             elements = reqDoc.select("img");
-            currentProduct.setName(elements.attr("alt"));
+            this.currentProduct.setName(elements.attr("alt"));
             /** Image catalog */
-            currentProduct.setImage(searchImage(elements.attr("src"), elements.attr("longdesc")));
+            this.currentProduct.setImage(searchImageDirectory(elements.attr("src"), elements.attr("longdesc")));
             /** Id catalog */
-            currentProduct.generationID();
-            productList.add(currentProduct);
-            parseContext(resultString);
+            this.currentProduct.generationID();
+            this.productList.add(this.currentProduct);
+            parseContextDirectory(resultString);
         } else {
             return;
         }
     }
 
-    private String searchImage(String... str) {
+    private String searchImageDirectory(String... str) {
         for (int i = 0; i < str.length; i++) {
             if (str[i].endsWith(".jpeg") || str[i].endsWith(".jpg") || str[i].endsWith(".png")) {
                 return str[i];

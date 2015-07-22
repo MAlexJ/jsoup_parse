@@ -2,7 +2,7 @@ package constants;
 
 public interface Constants_01 {
     //timeout open connection
-    public final int TIMEOUT = 1000;
+    public final int TIMEOUT = 500;
 
     //WEBSITE
     public final String WEBSITE = "http://kingsmoke.com.ua";
