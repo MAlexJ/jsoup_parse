@@ -36,6 +36,8 @@ public class Product implements Serializable {
         setId(sb.toString());
     }
 
+
+
     public String getId() {
         return id;
     }
